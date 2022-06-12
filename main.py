@@ -1,3 +1,5 @@
+# AUTHOR: BERKE AVCI
+
 import requests
 import json
 import datetime
