@@ -1,8 +1,8 @@
-# AUTHOR: BERKE AVCI
-
 import requests
 import json
 import datetime
+import ctypes
+import os
 
 TOKEN = "" # ACCESS KEY
 
@@ -20,4 +20,5 @@ while now_time.hour == 00:
     strToday = today.strftime("%Y-%m-%d")
     with open(f"images/{strToday}.jpg", "wb") as img_file:
         img_file.write(img_blob)
-        
+
+    ctypes.windll.user32.SystemParametersInfoA(20, 0, f"{os.getcwd()}\\images\\{strToday}.jpg", 0)
