@@ -5,6 +5,18 @@ import ctypes
 import os
 import time
 
+def calculate_remaining_time(date: datetime):
+    date_formatted = date.strftime("%H-%M-%S")
+    date_splitted = date_formatted.split("-")
+    date_dict = {"hour": int(date_splitted[0]), "minute": int(date_splitted[1]), "second": int(date_splitted[2])}
+
+    totalMin = 1440 - 60 * date_dict["hour"] - date_dict["minute"]
+    hoursRemaining = totalMin // 60
+    minRemaining = totalMin % 60
+
+    totalSec = (hoursRemaining*3600)+(minRemaining*60)+date_dict["second"]
+    return totalSec
+
 def change_last_date(new_date: datetime):
     new_date_formatted = new_date.strftime('%Y-%m-%d')
     with open("lastdate.json", "r") as f:
@@ -46,4 +58,4 @@ while True:
         ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{os.getcwd()}\\images\\{strToday}.jpg", 0)
         change_last_date(today)
         today = datetime.datetime.today()
-    time.sleep(30)
+    time.sleep(calculate_remaining_time(today))
