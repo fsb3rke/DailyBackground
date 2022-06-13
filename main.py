@@ -7,15 +7,18 @@ import time
 
 def change_last_date(new_date: datetime):
     new_date_formatted = new_date.strftime('%Y-%m-%d')
-    last_date_content = open("lastdate.json", "r").read()
+    with open("lastdate.json", "r") as f:
+        last_date_content = f.read()
     last_date_json = json.loads(last_date_content)
     last_date_json["date"] = new_date_formatted
     last_date_dumps = json.dumps(last_date_json)
-    open("lastdate.json", "w").write(last_date_dumps)
+    with open("lastdate.json", "w") as f:
+        f.write(last_date_dumps)
 
 def check_is_date_different(current_date: datetime):
     current_date_formatted = current_date.strftime('%Y-%m-%d')
-    last_date_content = open("lastdate.json", "r").read()
+    with open("lastdate.json", "r") as f:
+        last_date_content = f.read()
     last_date_json = json.loads(last_date_content)
     last_date_formatted = last_date_json["date"]
     if current_date_formatted != last_date_formatted:
@@ -24,7 +27,7 @@ def check_is_date_different(current_date: datetime):
         return False
 
 
-TOKEN = "" # ACCESS KEY
+TOKEN = "unsplash-api-access-key" # ACCESS KEY
 
 today = datetime.datetime.today()
 while True:
