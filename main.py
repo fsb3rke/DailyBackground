@@ -41,3 +41,4 @@ while True:
 
         ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{os.getcwd()}\\images\\{strToday}.jpg", 0)
         change_last_date(today)
+        today = datetime.datetime.today()
