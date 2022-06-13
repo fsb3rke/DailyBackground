@@ -3,6 +3,7 @@ import json
 import datetime
 import ctypes
 import os
+import time
 
 def change_last_date(new_date: datetime):
     new_date_formatted = new_date.strftime('%Y-%m-%d')
@@ -42,3 +43,4 @@ while True:
         ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{os.getcwd()}\\images\\{strToday}.jpg", 0)
         change_last_date(today)
         today = datetime.datetime.today()
+    time.sleep(30)
