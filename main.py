@@ -81,6 +81,6 @@ while True:
         change_last_date(today)
         today = datetime.datetime.today()
 
-        send_notification("Daily Background", f"Background has been updated!\n\nYour background is will be change after {time_format(calculate_remaining_time(today))}", 15, "bin/icon.ico", True)
+        send_notification("Daily Background", f"Background has been updated!\n\nYour background is will be change after\n{time_format(calculate_remaining_time(today))}", 15, "bin/icon.ico", True)
 
     time.sleep(calculate_remaining_time(today))
