@@ -4,6 +4,7 @@ import datetime
 import ctypes
 import os
 import time
+import sys
 from win10toast import ToastNotifier
 
 def time_format(seconds: int):
@@ -60,7 +61,6 @@ def check_is_date_different(current_date: datetime):
     else:
         return False
 
-
 TOKEN = "unsplash-api-access-key" # ACCESS KEY
 
 today = datetime.datetime.today()
@@ -83,4 +83,14 @@ while True:
 
         send_notification("Daily Background", f"Background has been updated!\n\nYour background is will be change after\n{time_format(calculate_remaining_time(today))}", 15, "bin/icon.ico", True)
 
-    time.sleep(calculate_remaining_time(today))
+    try:
+        if sys.argv[1] == "-timer":
+            for i in range(calculate_remaining_time(today)):
+                if i%4==0 and i != 0:
+                    print("")
+                print(i, "\t", end="")
+                time.sleep(1)
+        else:
+            time.sleep(calculate_remaining_time(today))
+    except IndexError:
+        time.sleep(calculate_remaining_time(today))
