@@ -17,7 +17,7 @@ pip install win10toast
 `en` , English\
 `tr` , Turkish
 
-## Extra Args
+## Extra Argument
 `-timer` , enable timer
 
 ## Contributing
