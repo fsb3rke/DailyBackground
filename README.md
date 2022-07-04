@@ -14,7 +14,7 @@ pip install win10toast
 ```
 
 ## Available Languages
-`en` ENGLISH
+`en` ENGLISH\
 `tr` TURKISH
 
 ## Contributing
