@@ -1,3 +1,5 @@
+# AUTHOR: BERKE (fsb3rke)
+
 import requests
 import json
 import datetime
@@ -7,26 +9,68 @@ import time
 import sys
 from win10toast import ToastNotifier
 
+
+class LANGUAGE:
+    languages = {"tr": "tr", "en": "en"}
+    class HEADER:
+        class TR:
+            header: str = "Günlük Arkaplan"
+        class EN:
+            header: str = "Daily Background"
+    class BODY:
+        class TR:
+            def body(remaining_time: str) -> str:
+                return f"Arkaplan güncellendi!\n\nArkaplanınız\n{remaining_time} sonra değişecektir."
+        class EN:
+            def body(remaining_time: str) -> str:
+                return f"Background has been updated!\n\nYour background is will be change after\n{remaining_time}"
+    class TIME:
+        class TR:
+            times = {"D": "G", "H": "SA", "m": "d", "s": "s"}
+        class EN:
+            times = {"D": "D", "H": "H", "m": "m", "s": "s"}
+
 def time_format(seconds: int):
+    settings = json.loads(open("settings.json", "r").read())
     if seconds is not None:
         seconds = int(seconds)
         d = seconds // (3600 * 24)
         h = seconds // 3600 % 24
         m = seconds % 3600 // 60
         s = seconds % 3600 % 60
-        if d > 0:
-            return '{:02d}D {:02d}H {:02d}m {:02d}s'.format(d, h, m, s)
-        elif h > 0:
-            return '{:02d}H {:02d}m {:02d}s'.format(h, m, s)
-        elif m > 0:
-            return '{:02d}m {:02d}s'.format(m, s)
-        elif s > 0:
-            return '{:02d}s'.format(s)
+        if settings["language"] == LANGUAGE.languages["en"]:
+            if d > 0:
+                return '{:02d}D {:02d}H {:02d}m {:02d}s'.format(d, h, m, s)
+            elif h > 0:
+                return '{:02d}H {:02d}m {:02d}s'.format(h, m, s)
+            elif m > 0:
+                return '{:02d}m {:02d}s'.format(m, s)
+            elif s > 0:
+                return '{:02d}s'.format(s)
+        elif settings["language"] == LANGUAGE.languages["tr"]:
+            if d > 0:
+                return '{:02d}G {:02d}SA {:02d}d {:02d}s'.format(d, h, m, s)
+            elif h > 0:
+                return '{:02d}SA {:02d}d {:02d}s'.format(h, m, s)
+            elif m > 0:
+                return '{:02d}d {:02d}s'.format(m, s)
+            elif s > 0:
+                return '{:02d}s'.format(s)
     return '-'
 
 def send_notification(notification_title: str, notification_body: str, duration: int, icon_path: str, threaded: bool):
     toast = ToastNotifier()
     toast.show_toast(notification_title, notification_body, duration=duration, icon_path=icon_path, threaded=threaded)
+
+def send_notification_and_language(remaining_time):
+    duration_time: int = 15
+    icon_path: str = "bin/icon.ico"
+    is_threaded: bool = True
+    settings = json.loads(open("settings.json", "r").read())
+    if settings["language"] == LANGUAGE.languages["en"]:
+        send_notification(LANGUAGE.HEADER.EN.header, LANGUAGE.BODY.EN.body(remaining_time=remaining_time), duration_time, icon_path, is_threaded)
+    elif settings["language"] == LANGUAGE.languages["tr"]:
+        send_notification(LANGUAGE.HEADER.TR.header, LANGUAGE.BODY.TR.body(remaining_time=remaining_time), duration_time, icon_path, is_threaded)
 
 def calculate_remaining_time(date: datetime):
     date_formatted = date.strftime("%H-%M-%S")
@@ -81,7 +125,7 @@ while True:
         change_last_date(today)
         today = datetime.datetime.today()
 
-        send_notification("Daily Background", f"Background has been updated!\n\nYour background is will be change after\n{time_format(calculate_remaining_time(today))}", 15, "bin/icon.ico", True)
+        send_notification_and_language(time_format(calculate_remaining_time(today)))
 
     try:
         if sys.argv[1] == "-timer":
