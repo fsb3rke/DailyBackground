@@ -1,4 +1,4 @@
-#AUTHOR: BERKE (fsb3rke)
+# AUTHOR: BERKE (fsb3rke)
 
 import tkinter as tkr
 import os
