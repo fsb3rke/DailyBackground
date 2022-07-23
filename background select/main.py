@@ -39,7 +39,7 @@ image_list = os.listdir()
 image_name_list = tkr.Listbox(image_select, font="Helvetica 12 bold", bg="lightgray", selectmode=tkr.SINGLE)
 for item in image_list:
     pos = 0
-    image_name_list.insert(pos, item)
+    image_name_list.insert(pos, item.split(".")[0])
     pos += 1
 
 def set_background_image():
