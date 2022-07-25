@@ -43,7 +43,7 @@ for item in image_list:
     pos += 1
 
 def set_background_image():
-    ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{os.getcwd()}\\{image_name_list.get(tkr.ACTIVE)}", 0)
+    ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{os.getcwd()}\\{image_name_list.get(tkr.ACTIVE)}.jpg", 0)
     var.set(image_name_list.get(tkr.ACTIVE))
 
 button_text: str = ""
